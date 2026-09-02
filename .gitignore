@@ -2,6 +2,7 @@
 .venv/
 __pycache__/
 *.py[cod]
+.idea/
 
 # Django
 db.sqlite3
