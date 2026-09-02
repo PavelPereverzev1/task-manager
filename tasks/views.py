@@ -32,10 +32,6 @@ class ProjectListView(LoginRequiredMixin, ListView):
 
 
 class ProjectCreateView(LoginRequiredMixin, View):
-    def get(self, request):
-        form = ProjectForm()
-        return render(request, "tasks/partials/project_form.html", {"form": form})
-
     def post(self, request):
         form = ProjectForm(request.POST)
         if form.is_valid():

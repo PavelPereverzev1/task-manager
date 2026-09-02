@@ -10,7 +10,7 @@ class ProjectForm(forms.ModelForm):
             "title": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "Enter project name...",
+                    "placeholder": "Enter list name...",
                     "required": True,
                     "maxlength": "255",
                 }

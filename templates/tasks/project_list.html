@@ -1,24 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard - Task Manager{% endblock %}
+{% block title %}My Projects - Task Manager{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <h2>My Projects</h2>
-        </div>
-        <div class="col-md-6">
-            {% include "tasks/partials/project_form.html" with form=form %}
-        </div>
-    </div>
+<div class="container col-md-8 col-lg-7 pb-5 mb-5">
 
-    <div class="row" id="projects-list">
+    <div id="projects-list" class="d-flex flex-column gap-4 py-4">
         {% for project in projects %}
             {% include "tasks/partials/project_card.html" with project=project %}
         {% empty %}
-            <p class="text-muted text-center py-4" id="no-projects">No projects created yet.</p>
+            <p class="text-center text-muted py-5" id="no-projects">
+                No TODO lists yet. Click the button below to create one!
+            </p>
         {% endfor %}
+    </div>
+
+</div>
+
+<div class="fixed-bottom py-3 text-center bg-body" style="z-index: 1020;">
+    <button class="btn btn-primary btn-lg px-4 shadow" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+        <i class="bi bi-plus-lg me-2"></i>Add TODO List
+    </button>
+</div>
+  
+<div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="addProjectModalLabel">Create New TODO List</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            {% include "tasks/partials/project_form.html" with form=form %}
+        </div>
     </div>
 </div>
 {% endblock %}
