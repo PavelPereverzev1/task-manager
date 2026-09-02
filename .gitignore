@@ -1,0 +1,15 @@
+# Python / uv
+.venv/
+__pycache__/
+*.py[cod]
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+.env
+
+# Linters / Tools
+.ruff_cache/
+.pre-commit-config.yaml.cache
