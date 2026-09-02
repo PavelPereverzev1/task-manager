@@ -3,12 +3,22 @@
 {% block title %}Dashboard - Task Manager{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>My Projects</h2>
-    <button class="btn btn-primary">
-        <i class="bi bi-plus-lg me-1"></i>New Project
-    </button>
-</div>
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h2>My Projects</h2>
+        </div>
+        <div class="col-md-6">
+            {% include "tasks/partials/project_form.html" with form=form %}
+        </div>
+    </div>
 
-<p class="text-muted">Projects will appear here.</p>
+    <div class="row" id="projects-list">
+        {% for project in projects %}
+            {% include "tasks/partials/project_card.html" with project=project %}
+        {% empty %}
+            <p class="text-muted text-center py-4" id="no-projects">No projects created yet.</p>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
