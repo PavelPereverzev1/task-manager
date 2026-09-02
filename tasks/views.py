@@ -32,6 +32,10 @@ class ProjectListView(LoginRequiredMixin, ListView):
 
 
 class ProjectCreateView(LoginRequiredMixin, View):
+    def get(self, request):
+        form = ProjectForm()
+        return render(request, "tasks/partials/project_form.html", {"form": form})
+
     def post(self, request):
         form = ProjectForm(request.POST)
         if form.is_valid():
@@ -44,6 +48,33 @@ class ProjectCreateView(LoginRequiredMixin, View):
 
         return render(
             request, "tasks/partials/project_form.html", {"form": form}, status=422
+        )
+
+
+class ProjectUpdateView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        project = get_object_or_404(Project, pk=pk, user=request.user)
+        form = ProjectForm(instance=project)
+        return render(
+            request,
+            "tasks/partials/project_form.html",
+            {"form": form, "project": project},
+        )
+
+    def post(self, request, pk):
+        project = get_object_or_404(Project, pk=pk, user=request.user)
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            project = form.save()
+            return render(
+                request, "tasks/partials/project_card.html", {"project": project}
+            )
+
+        return render(
+            request,
+            "tasks/partials/project_form.html",
+            {"form": form, "project": project},
+            status=422,
         )
 
 
