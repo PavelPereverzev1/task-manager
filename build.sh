@@ -5,5 +5,5 @@ pip install uv
 
 uv pip install --system -r pyproject.toml
 
-python manage.py collectstatic --no-input
-python manage.py migrate
+uv run python manage.py collectstatic --no-input
+uv run python manage.py migrate
