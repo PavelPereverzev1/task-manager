@@ -1,29 +1,52 @@
 <div class="modal-header bg-primary text-white">
-    <h5 class="modal-title">Edit Task</h5>
-    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+  <h5 class="modal-title">Edit Task</h5>
+  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 
 <form hx-post="{% url 'task-update' task.id %}"
       hx-target="#task-{{ task.id }}"
       hx-swap="outerHTML"
-      hx-on:htmx:after-request="if(event.detail.successful) { bootstrap.Modal.getInstance(document.getElementById('projectModal')).hide(); }">
-    {% csrf_token %}
-    <div class="modal-body">
-        <div class="mb-3">
-            <label class="form-label fw-bold">Title</label>
-            {{ form.title }}
+      hx-target-error="#modal-content"
+      hx-on:htmx:after-request="if (event.detail.xhr.status === 200 || event.detail.xhr.status === 201) {
+                                const modalEl = document.getElementById('projectModal');
+                                const modal = bootstrap.Modal.getInstance(modalEl);
+                                if (modal) modal.hide();
+                                }">
+  {% csrf_token %}
+  <div class="modal-body">
+    <div class="mb-3">
+      <label for="{{ form.title.id_for_label }}" class="form-label fw-bold">Title</label>
+      {{ form.title }}
+      {% if form.title.errors %}
+        <div class="text-danger small mt-1">
+          {{ form.title.errors|join:", " }}
         </div>
-        <div class="mb-3">
-            <label class="form-label fw-bold">Priority</label>
-            {{ form.priority }}
-        </div>
-        <div class="mb-3">
-            <label class="form-label fw-bold">Deadline</label>
-            {{ form.deadline }}
-        </div>
+      {% endif %}
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary">Save Changes</button>
+
+    <div class="mb-3">
+      <label for="{{ form.priority.id_for_label }}" class="form-label fw-bold">Priority</label>
+      {{ form.priority }}
+      {% if form.priority.errors %}
+        <div class="text-danger small mt-1">
+          {{ form.priority.errors|join:", " }}
+        </div>
+      {% endif %}
     </div>
+
+    <div class="mb-3">
+      <label for="{{ form.deadline.id_for_label }}" class="form-label fw-bold">Deadline</label>
+      {{ form.deadline }}
+      {% if form.deadline.errors %}
+        <div class="text-danger small mt-1">
+          {{ form.deadline.errors|join:", " }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+  </div>
 </form>
