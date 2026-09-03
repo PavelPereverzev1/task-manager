@@ -1,38 +1,38 @@
 <div class="modal-header bg-primary text-white">
-    <h5 class="modal-title">
-        {% if project %}Edit TODO List{% else %}Create New TODO List{% endif %}
-    </h5>
-    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+  <h5 class="modal-title">
+    {% if project %}Edit TODO List{% else %}Create New TODO List{% endif %}
+  </h5>
+  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 
 <form hx-post="{% if project %}{% url 'project-update' project.id %}{% else %}{% url 'project-create' %}{% endif %}"
       {% if project %}
-          hx-target="#project-{{ project.id }}"
-          hx-swap="outerHTML"
+        hx-target="#project-{{ project.id }}"
+        hx-swap="outerHTML"
       {% else %}
-          hx-target="#projects-list"
-          hx-swap="afterbegin show:.card:top"
+        hx-target="#projects-list"
+        hx-swap="afterbegin show:.card:top"
       {% endif %}
       hx-on:htmx:after-request="if(event.detail.successful) {
-          this.reset();
-          bootstrap.Modal.getInstance(document.getElementById('projectModal')).hide();
-      }">
-    {% csrf_token %}
-    <div class="modal-body">
-        <div class="mb-3">
-            <label for="id_title" class="form-label fw-bold">List Name</label>
-            {{ form.title }}
-            {% if form.title.errors %}
-                <div class="text-danger small mt-1">
-                    {{ form.title.errors|join:", " }}
-                </div>
-            {% endif %}
+                                this.reset();
+                                bootstrap.Modal.getInstance(document.getElementById('projectModal')).hide();
+                                }">
+  {% csrf_token %}
+  <div class="modal-body">
+    <div class="mb-3">
+      <label for="id_title" class="form-label fw-bold">List Name</label>
+      {{ form.title }}
+      {% if form.title.errors %}
+        <div class="text-danger small mt-1">
+          {{ form.title.errors|join:", " }}
         </div>
+      {% endif %}
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary">
-            {% if project %}Save Changes{% else %}Create List{% endif %}
-        </button>
-    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <button type="submit" class="btn btn-primary">
+      {% if project %}Save Changes{% else %}Create List{% endif %}
+    </button>
+  </div>
 </form>

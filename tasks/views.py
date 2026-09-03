@@ -4,8 +4,8 @@ from django.shortcuts import redirect, get_object_or_404, render
 from django.views import View
 from django.views.generic import ListView, TemplateView
 
-from .forms import ProjectForm
-from .models import Project
+from .forms import ProjectForm, TaskForm
+from .models import Project, Task
 
 
 class HomeView(TemplateView):
@@ -82,4 +82,51 @@ class ProjectDeleteView(LoginRequiredMixin, View):
     def post(self, request, pk):
         project = get_object_or_404(Project, pk=pk, user=request.user)
         project.delete()
+        return HttpResponse("")
+
+
+class TaskCreateView(LoginRequiredMixin, View):
+    def post(self, request, project_id):
+        project = get_object_or_404(Project, id=project_id, user=request.user)
+        title = request.POST.get("title")
+        if title:
+            task = Task.objects.create(project=project, title=title)
+            return render(request, "tasks/partials/task_item.html", {"task": task})
+        return HttpResponse("", status=400)
+
+
+class TaskToggleView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        task = get_object_or_404(Task, pk=pk, project__user=request.user)
+        task.is_completed = not task.is_completed
+        task.save()
+        return render(request, "tasks/partials/task_item.html", {"task": task})
+
+
+class TaskUpdateView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        task = get_object_or_404(Task, pk=pk, project__user=request.user)
+        form = TaskForm(instance=task)
+        return render(
+            request, "tasks/partials/task_form.html", {"form": form, "task": task}
+        )
+
+    def post(self, request, pk):
+        task = get_object_or_404(Task, pk=pk, project__user=request.user)
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            task = form.save()
+            return render(request, "tasks/partials/task_item.html", {"task": task})
+        return render(
+            request,
+            "tasks/partials/task_form.html",
+            {"form": form, "task": task},
+            status=422,
+        )
+
+
+class TaskDeleteView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        task = get_object_or_404(Task, pk=pk, project__user=request.user)
+        task.delete()
         return HttpResponse("")

@@ -3,33 +3,33 @@
 {% block title %}My Projects - Task Manager{% endblock %}
 
 {% block content %}
-<div class="container col-md-8 col-lg-7 pb-5 mb-5">
+  <div class="container col-md-8 col-lg-7 pb-5 mb-5">
     <div id="projects-list" class="d-flex flex-column gap-4 py-4">
-        {% for project in projects %}
-            {% include "tasks/partials/project_card.html" with project=project %}
-        {% empty %}
-            <p class="text-center text-muted py-5" id="no-projects">
-                No TODO lists yet. Click the button below to create one!
-            </p>
-        {% endfor %}
+      {% for project in projects %}
+        {% include "tasks/partials/project_card.html" with project=project %}
+      {% empty %}
+        <p class="text-center text-muted py-5" id="no-projects">
+          No TODO lists yet. Click the button below to create one!
+        </p>
+      {% endfor %}
     </div>
-</div>
+  </div>
 
-<div class="fixed-bottom py-3 text-center bg-body" style="z-index: 1020;">
+  <div class="fixed-bottom py-3 text-center bg-body" style="z-index: 1020;">
     <button class="btn btn-primary btn-lg px-4 shadow"
             hx-get="{% url 'project-create' %}"
             hx-target="#modal-content"
             hx-swap="innerHTML"
             hx-on:htmx:after-on-load="bootstrap.Modal.getOrCreateInstance(document.getElementById('projectModal')).show()">
-        <i class="bi bi-plus-lg me-2"></i>Add TODO List
+      <i class="bi bi-plus-lg me-2"></i>Add TODO List
     </button>
-</div>
+  </div>
 
-<div class="modal fade" id="projectModal" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="projectModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" id="modal-content">
-            {% include "tasks/partials/project_form.html" with form=form %}
-        </div>
+      <div class="modal-content" id="modal-content">
+        {% include "tasks/partials/project_form.html" with form=form %}
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}

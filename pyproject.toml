@@ -18,3 +18,8 @@ dependencies = [
     "ruff>=0.16.5",
 ]
 
+[dependency-groups]
+dev = [
+    "djhtml>=3.0.11",
+]
+
