@@ -136,4 +136,4 @@ To automatically check and format code before every git commit:
 
 ## 📄 License
 
-Developed for educational and technical assessment purposes.
+Developed for educational and technical assessment purposes. 
