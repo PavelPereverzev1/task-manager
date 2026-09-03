@@ -4,18 +4,24 @@
 
 {% block content %}
   <div class="container col-md-8 col-lg-7 pb-5 mb-5">
-    <div id="projects-list" class="d-flex flex-column gap-4 py-4">
+    <div id="projects-list"
+         class="d-flex flex-column gap-4 py-4"
+         hx-on:htmx:after-settle="
+                                  if (this.querySelectorAll('.card').length === 0 && !document.getElementById('no-projects')) {
+                                  this.innerHTML = `<p class='text-center text-muted py-5 my-0' id='no-projects'>No TODO lists yet. Click the button below to create one!</p>`;
+                                  }
+                                 ">
       {% for project in projects %}
         {% include "tasks/partials/project_card.html" with project=project %}
       {% empty %}
-        <p class="text-center text-muted py-5" id="no-projects">
+        <p class="text-center text-muted py-5 my-0" id="no-projects">
           No TODO lists yet. Click the button below to create one!
         </p>
       {% endfor %}
     </div>
   </div>
 
-  <div class="fixed-bottom py-3 text-center bg-body" style="z-index: 1020;">
+  <div class="fixed-bottom py-3 text-center bg-body border-top" style="z-index: 1020;">
     <button class="btn btn-primary btn-lg px-4 shadow"
             hx-get="{% url 'project-create' %}"
             hx-target="#modal-content"
@@ -27,9 +33,7 @@
 
   <div class="modal fade" id="projectModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content" id="modal-content">
-        {% include "tasks/partials/project_form.html" with form=form %}
-      </div>
+      <div class="modal-content" id="modal-content"></div>
     </div>
   </div>
 {% endblock %}

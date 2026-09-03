@@ -1,46 +1,48 @@
 <div class="card shadow-sm border-0 rounded-3 overflow-hidden" id="project-{{ project.id }}">
-    <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between py-3">
-        <div class="d-flex align-items-center gap-2">
-            <i class="bi bi-calendar-event fs-5"></i>
-            <h5 class="mb-0 fw-semibold">{{ project.title }}</h5>
-        </div>
-        <div class="d-flex align-items-center gap-2">
-            <button class="btn btn-link text-white p-0 border-0 fs-5"
-                    title="Edit Project"
-                    hx-get="{% url 'project-update' project.id %}"
-                    hx-target="#modal-content"
-                    hx-swap="innerHTML"
-                    hx-on:htmx:after-on-load="bootstrap.Modal.getOrCreateInstance(document.getElementById('projectModal')).show()">
-                <i class="bi bi-pencil"></i>
-            </button>
-            <button class="btn btn-link text-white p-0 border-0 fs-5"
-                    hx-post="{% url 'project-delete' project.id %}"
-                    hx-target="#project-{{ project.id }}"
-                    hx-swap="outerHTML">
-                <i class="bi bi-trash"></i>
-            </button>
-        </div>
+  <div class="card-header bg-primary text-white d-flex align-items-center justify-content-between py-3">
+    <div class="d-flex align-items-center gap-2">
+      <i class="bi bi-calendar-event fs-5"></i>
+      <h5 class="mb-0 fw-semibold">{{ project.title }}</h5>
     </div>
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-link text-white p-0 border-0 fs-5"
+              title="Edit Project"
+              hx-get="{% url 'project-update' project.id %}"
+              hx-target="#modal-content"
+              hx-swap="innerHTML"
+              hx-on:htmx:after-on-load="bootstrap.Modal.getOrCreateInstance(document.getElementById('projectModal')).show()">
+        <i class="bi bi-pencil"></i>
+      </button>
+      <button class="btn btn-link text-white p-0 border-0 fs-5"
+              hx-post="{% url 'project-delete' project.id %}"
+              hx-target="#project-{{ project.id }}"
+              hx-swap="outerHTML">
+        <i class="bi bi-trash"></i>
+      </button>
+    </div>
+  </div>
 
-    <div class="bg-light p-3 border-bottom">
-        <form hx-post="{% url 'task-create' project.id %}"
-              hx-target="#tasks-list-{{ project.id }}"
-              hx-swap="afterbegin"
-              hx-on:htmx:after-request="if(event.detail.successful) { this.reset(); const emptyMsg = document.getElementById('no-tasks-{{ project.id }}'); if(emptyMsg) emptyMsg.remove(); }">
-            {% csrf_token %}
-            <div class="input-group">
-                <span class="input-group-text bg-white text-success border-end-0 fs-5"><i class="bi bi-plus-lg"></i></span>
-                <input type="text" name="title" class="form-control border-start-0 ps-0" placeholder="Start typing here to create a task..." required>
-                <button class="btn btn-success fw-semibold px-4" type="submit">Add Task</button>
-            </div>
-        </form>
-    </div>
+  <div class="bg-light p-3 border-bottom">
+    <form hx-post="{% url 'task-create' project.id %}"
+          hx-target="#tasks-list-{{ project.id }}"
+          hx-swap="afterbegin"
+          hx-on:htmx:after-request="if(event.detail.successful) { this.reset(); const emptyMsg = document.getElementById('no-tasks-{{ project.id }}'); if(emptyMsg) emptyMsg.remove(); }">
+      {% csrf_token %}
+      <div class="input-group">
+        <span class="input-group-text bg-white text-success border-end-0 fs-5"><i class="bi bi-plus-lg"></i></span>
+        <input type="text" name="title" class="form-control border-start-0 ps-0" placeholder="Start typing here to create a task..." required>
+        <button class="btn btn-success fw-semibold px-4" type="submit">Add Task</button>
+      </div>
+    </form>
+  </div>
 
-    <div class="list-group list-group-flush" id="tasks-list-{{ project.id }}">
-        {% for task in project.tasks.all %}
-            {% include "tasks/partials/task_item.html" with task=task %}
-        {% empty %}
-            <div class="text-center text-muted py-3 small" id="no-tasks-{{ project.id }}">No tasks yet</div>
-        {% endfor %}
-    </div>
+  <div class="list-group list-group-flush" id="tasks-list-{{ project.id }}">
+    {% for task in project.tasks.all %}
+      {% include "tasks/partials/task_item.html" with task=task %}
+    {% empty %}
+      <div class="text-center text-muted py-3 small" id="no-tasks-{{ project.id }}">No tasks yet</div>
+    {% endfor %}
+  </div>
 </div>
+
+<div id="no-projects" hx-swap-oob="delete"></div>
