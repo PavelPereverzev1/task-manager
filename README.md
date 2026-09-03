@@ -7,7 +7,7 @@ A simple, responsive Web application designed for managing personal projects and
 ## ✨ Features
 
 - **Project Management (CRUD):** Create, edit, and delete TODO lists (projects) dynamically.
-- **Task Management (CRUD):** Add tasks, edit details (title, deadline, priority), toggle completion status (`is_completed`), and delete tasks.
+- **Task Management (CRUD):** Add tasks, edit details (title, deadline, priority), toggle completion status (`completed`), and delete tasks.
 - **Single Page Application (SPA) Experience:** Instant AJAX interactions powered by **HTMX** with zero custom JS boilerplate.
 - **User Authentication:** Secure access control via `django-allauth`. Users can only access and manage their own projects and tasks.
 - **Responsive UI:** Clean, mobile-friendly layout built with Bootstrap 5.
@@ -84,6 +84,20 @@ Open your browser and navigate to:
 
 ---
 
+## 🧪 Running Tests
+
+Automated unit tests cover Project & Task CRUD operations, validation rules, HTMX responses, and user authorization/data isolation.
+
+### Run Tests via Docker (Recommended)
+
+docker compose exec web uv run python manage.py test
+
+### Run Tests Locally
+
+python manage.py test
+
+---
+
 ## 🛠 Useful Docker Management Commands
 
 * View application logs in real-time:
@@ -136,4 +150,4 @@ To automatically check and format code before every git commit:
 
 ## 📄 License
 
-Developed for educational and technical assessment purposes. 
+Developed for educational and technical assessment purposes.
